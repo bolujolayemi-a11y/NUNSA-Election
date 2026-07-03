@@ -25,7 +25,7 @@ app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().t
 
 // Local dev: listen normally
 // Vercel: export the app as a serverless function
-if (process.env.NODE_ENV !== 'production') {
+if (require.main === module) {
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => console.log(`🚀 Election API running on http://localhost:${PORT}`));
 }
