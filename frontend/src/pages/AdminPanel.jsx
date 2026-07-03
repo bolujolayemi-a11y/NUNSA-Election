@@ -279,6 +279,16 @@ export default function AdminPanel() {
     catch (e) { flash('error', 'Reset failed'); }
   };
 
+  const tabStyle = (t) => ({
+    padding: '10px 20px',
+    borderRadius: 'var(--radius-sm)',
+    fontWeight: 600,
+    fontSize: '0.9rem',
+    background: tab === t ? 'var(--green)' : 'transparent',
+    color: tab === t ? 'white' : 'var(--gray-600)',
+    border: tab === t ? 'none' : '1.5px solid var(--gray-200)',
+  });
+  
   if (loading) return <div style={{ padding: 40, textAlign: 'center' }}>Loading...</div>;
 
    return (
