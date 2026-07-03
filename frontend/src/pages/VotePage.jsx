@@ -163,7 +163,6 @@ export default function VotePage() {
   const handleSubmit = async () => {
     if (!allAnswered) return setError('Please answer every position before submitting.');
     setError('');
-    if (!window.confirm('Submit your votes? This cannot be undone.')) return;
 
     setSubmitting(true);
     try {

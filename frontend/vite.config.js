@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  base: '/', // Add this explicitly
   server: {
-    // Only used in local dev — proxies /api to local Express server
     proxy: {
       '/api': 'http://localhost:4000',
     },
