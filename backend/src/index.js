@@ -16,10 +16,10 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/auth', authRoutes);
-app.use('/api/positions', positionRoutes);
-app.use('/api/votes', voteRoutes);
-app.use('/api/master', masterRoutes);
+app.use('/auth', authRoutes);
+app.use('/positions', positionRoutes);
+app.use('/votes', voteRoutes);
+app.use('/master', masterRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
 
