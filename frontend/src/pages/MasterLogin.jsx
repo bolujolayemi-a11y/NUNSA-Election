@@ -21,7 +21,9 @@ export default function MasterLogin() {
       loginMaster(data.token, { email: data.email, role: 'master' });
       navigate('/master/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Invalid credentials');
+      // ✅ FIX: Extract the string message
+      const errorMessage = err.response?.data?.error || err.message || 'Invalid credentials';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

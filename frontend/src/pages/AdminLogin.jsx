@@ -21,7 +21,9 @@ export default function AdminLogin() {
       loginAdmin(data.token, { username: data.username, role: 'admin' });
       navigate('/secure-admin/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Invalid credentials');
+      // ✅ FIX: Extract the string message from the error object
+      const errorMessage = err.response?.data?.error || err.message || 'Invalid credentials';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
