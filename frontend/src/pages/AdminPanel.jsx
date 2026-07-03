@@ -281,28 +281,180 @@ export default function AdminPanel() {
 
   if (loading) return <div style={{ padding: 40, textAlign: 'center' }}>Loading...</div>;
 
-  return (
+   return (
     <div style={{ minHeight: '100vh', background: 'var(--off-white)' }}>
       <Navbar links={[{ label: '📊 Results', to: '/secure-admin/results' }]} />
       <SiteStatusBanner />
+
       <div className="page-wide">
-        {msg.text && <div className={msg.type === 'error' ? 'error-msg' : 'success-msg'} style={{ marginBottom: 16 }}>{msg.text}</div>}
-        <div style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
-          <button onClick={() => setTab('positions')}>📋 Positions</button>
-          <button onClick={() => setTab('voters')}>👥 Voters</button>
-        </div>
-        {/* Render logic... (simplified for brevity) */}
-        {tab === 'positions' && positions.map(pos => (
-          <div key={pos.id} className="card">
-             <span>{pos.title}</span>
-             <button onClick={() => deletePosition(pos.id)}>Delete</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+          <h1 style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.5rem' }}>Admin Panel</h1>
+          <div style={{ fontSize: '0.85rem', color: 'var(--gray-600)' }}>
+            {voters.filter(v => v.has_voted).length}/{voters.length} voters have voted
           </div>
-        ))}
+        </div>
+        {msg.text && <div className={msg.type === 'error' ? 'error-msg' : 'success-msg'} style={{ marginBottom: 16 }}>{msg.text}</div>}
+        {/* Tabs */}
+        <div style={{ display: 'flex', gap: 10, marginBottom: 24, flexWrap: 'wrap' }}>
+          <button style={tabStyle('positions')} onClick={() => setTab('positions')}>📋 Positions & Candidates</button>
+          <button style={tabStyle('voters')} onClick={() => setTab('voters')}>👥 Voters ({voters.length})</button>
+        </div>
+
+        {/* ── Positions Tab ── */}
+        {tab === 'positions' && (
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <h2 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: '1.1rem' }}>Positions</h2>
+              <div style={{ display: 'flex', gap: 10 }}>
+
+                <button className="btn-primary" onClick={() => setCandidateModal({ mode: 'add' })} style={{ fontSize: '0.85rem', padding: '8px 16px' }}>+ Add Candidate</button>
+                <button className="btn-primary" onClick={() => setPositionModal({ mode: 'add' })} style={{ fontSize: '0.85rem', padding: '8px 16px' }}>+ Add Position</button>
+              </div>
+            </div>
+
+            {positions.length === 0 && (
+              <div className="card" style={{ padding: 32, textAlign: 'center', color: 'var(--gray-600)' }}>
+                No positions yet. Add your first position above.
+              </div>
+            )}
+
+            {positions.map(pos => (
+              <div key={pos.id} className="card" style={{ marginBottom: 16, overflow: 'hidden' }}>
+                <div style={{ padding: '14px 18px', background: 'var(--green-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--gray-200)' }}>
+                  <div>
+                    <span style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: '1rem', color: 'var(--green-dark)' }}>{pos.title}</span>
+                    {pos.description && <span style={{ fontSize: '0.8rem', color: 'var(--gray-600)', marginLeft: 10 }}>{pos.description}</span>}
+                  </div>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button className="btn-ghost" style={{ fontSize: '0.8rem', padding: '6px 12px' }} onClick={() => setPositionModal({ mode: 'edit', data: pos })}>Edit</button>
+                    <button className="btn-danger" style={{ fontSize: '0.8rem', padding: '6px 12px' }} onClick={() => deletePosition(pos.id)}>Delete</button>
+                  </div>
+                </div>
+                <div style={{ padding: 16 }}>
+                  {pos.candidates.length === 0 ? (
+                    <p style={{ fontSize: '0.85rem', color: 'var(--gray-400)', fontStyle: 'italic' }}>No candidates yet.</p>
+                  ) : (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+
+                      {pos.candidates.map(c => (
+
+                        <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', background: 'var(--gray-100)', borderRadius: 'var(--radius-sm)', minWidth: 200 }}>
+
+                          <div style={{ width: 36, height: 36, borderRadius: '50%', overflow: 'hidden', background: 'var(--gray-200)', flexShrink: 0 }}>
+
+                            {c.photo_url ? <img src={c.photo_url} alt={c.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>👤</div>}
+
+                          </div>
+
+                          <div style={{ flex: 1 }}>
+
+                            <div style={{ fontWeight: 600, fontSize: '0.88rem' }}>{c.name}</div>
+
+                            {c.bio && <div style={{ fontSize: '0.75rem', color: 'var(--gray-600)' }}>{c.bio}</div>}
+
+                          </div>
+
+                          <div style={{ display: 'flex', gap: 6 }}>
+
+                            <button className="btn-ghost" style={{ fontSize: '0.75rem', padding: '4px 8px' }} onClick={() => setCandidateModal({ mode: 'edit', data: c })}>Edit</button>
+
+                            <button className="btn-danger" style={{ fontSize: '0.75rem', padding: '4px 8px' }} onClick={() => deleteCandidate(c.id)}>✕</button>
+
+                          </div>
+
+                        </div>
+
+                      ))}
+
+                    </div>
+
+                  )}
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        )}
+
+
+        {/* ── Voters Tab ── */}
+
+        {tab === 'voters' && (
+
+          <div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+
+              <h2 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: '1.1rem' }}>Voter Registry</h2>
+
+              <div style={{ display: 'flex', gap: 10 }}>
+
+                <button className="btn-ghost" onClick={() => setBulkModal(true)} style={{ fontSize: '0.85rem', padding: '8px 16px' }}>📥 Bulk Import</button>
+
+                <button className="btn-primary" onClick={() => setVoterModal(true)} style={{ fontSize: '0.85rem', padding: '8px 16px' }}>+ Add Voter</button>
+
+              </div>
+
+            </div>
+
+
+            <div className="card" style={{ overflow: 'auto' }}>
+
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+
+                <thead>
+
+                  <tr style={{ borderBottom: '2px solid var(--gray-200)', background: 'var(--gray-100)' }}>
+
+                    {['Matric Number', 'Name', 'Level', 'Status', 'Actions'].map(h => (
+
+                      <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: '0.82rem', fontWeight: 600, color: 'var(--gray-600)', fontFamily: 'Syne', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
+
+                    ))}
+
+                  </tr>
+
+                </thead>
+
+                <tbody>
+
+                  {voters.map((v, i) => (
+                    <tr key={v.id} style={{ borderBottom: '1px solid var(--gray-100)', background: i % 2 === 0 ? 'white' : 'var(--off-white)' }}>
+                      <td style={{ padding: '11px 16px', fontFamily: 'monospace', fontSize: '0.88rem', color: 'var(--green-dark)', fontWeight: 600 }}>{v.matric_number}</td>
+                      <td style={{ padding: '11px 16px', fontSize: '0.9rem' }}>{v.name}</td>
+                      <td style={{ padding: '11px 16px', fontSize: '0.85rem', color: 'var(--gray-600)' }}>{v.level || '—'}</td>
+                      <td style={{ padding: '11px 16px' }}>
+                        {v.has_voted
+                          ? <span className="badge-voted">✓ Voted</span>
+                          : <span style={{ color: 'var(--gray-400)', fontSize: '0.82rem' }}>Pending</span>}
+                      </td>
+                      <td style={{ padding: '11px 16px' }}>
+                        <div style={{ display: 'flex', gap: 6 }}>
+                          {v.has_voted && (
+                            <button className="btn-ghost" style={{ fontSize: '0.75rem', padding: '5px 10px', color: 'var(--gold)' }} onClick={() => resetVote(v.id)}>Reset</button>
+                          )}
+                          <button className="btn-danger" style={{ fontSize: '0.75rem', padding: '5px 10px' }} onClick={() => deleteVoter(v.id)}>Remove</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {voters.length === 0 && <div style={{ padding: 32, textAlign: 'center', color: 'var(--gray-400)' }}>No voters registered yet.</div>}
+            </div>
+          </div>
+        )}
       </div>
       {positionModal && <PositionModal />}
       {candidateModal && <CandidateModal />}
       {voterModal && <VoterModal />}
       {bulkModal && <BulkVoterModal />}
     </div>
+
   );
+
 }
