@@ -7,8 +7,8 @@
       "destination": "/api/index"
     },
     {
-      "source": "/((?!api/).*)",
-      "destination": "/frontend/dist/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
