@@ -56,12 +56,11 @@ export default function MasterDashboard() {
     }
   };
 
-  if (loading) return (
+  if (loading || !stats) return (
     <div style={{ minHeight: '100vh', background: '#0a0c10', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
       Loading control panel...
     </div>
   );
-
   return (
     <div style={{ minHeight: '100vh', background: '#0a0c10' }}>
       <div style={{ padding: '18px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>

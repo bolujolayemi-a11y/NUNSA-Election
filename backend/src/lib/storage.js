@@ -12,7 +12,7 @@ const BUCKET = 'candidate-photos';
 // Multer — store in memory, then push to Supabase
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
   fileFilter: (req, file, cb) => {
     const allowed = ['.jpg', '.jpeg', '.png', '.webp'];
     const ext = path.extname(file.originalname).toLowerCase();

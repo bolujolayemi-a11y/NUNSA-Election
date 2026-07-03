@@ -139,11 +139,12 @@ export default function VotePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (voter?.has_voted) { navigate('/success'); return; }
+  if (!voter) return; // Wait for store to hydrate
+  if (voter.has_voted) { navigate('/success'); return; }
     api.get('/positions')
       .then(({ data }) => { setPositions(data); setLoading(false); })
       .catch(() => { setError('Failed to load ballot. Please refresh.'); setLoading(false); });
-  }, []);
+  }, [voter]);
 
   const isUncontested = (pos) => pos.candidates.length === 1;
   const isContested   = (pos) => pos.candidates.length > 1;
@@ -257,7 +258,10 @@ export default function VotePage() {
                   <YesNoCard
                     candidate={pos.candidates[0]}
                     value={yesNo[pos.id] || null}
-                    onChange={(val) => setYesNo((prev) => ({ ...prev, [pos.id]: val }))}
+                   onChange={(val) => {
+                      setSelections(prev => { const next = {...prev}; delete next[pos.id]; return next; });
+                      setYesNo((prev) => ({ ...prev, [pos.id]: val }));
+                    }}
                   />
                 </div>
               </div>
@@ -271,7 +275,10 @@ export default function VotePage() {
                     key={c.id}
                     candidate={c}
                     selected={selections[pos.id] === c.id}
-                    onSelect={() => setSelections((prev) => ({ ...prev, [pos.id]: c.id }))}
+                    onSelect={() => {
+                      setYesNo(prev => { const next = {...prev}; delete next[pos.id]; return next; });
+                      setSelections((prev) => ({ ...prev, [pos.id]: c.id }));
+                    }}
                   />
                 ))}
               </div>
