@@ -9,7 +9,7 @@ const masterRoutes = require('./routes/master');
 
 const app = express();
 
-app.use(cors({
+aapp.use(cors({
   origin: process.env.FRONTEND_URL || 'https://nunsa-election-nu.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
