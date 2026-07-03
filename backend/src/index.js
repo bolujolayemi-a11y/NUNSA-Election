@@ -10,7 +10,8 @@ const masterRoutes = require('./routes/master');
 const app = express();
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL || 'https://nunsa-election-nu.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 }));
 app.use(express.json());
@@ -21,7 +22,7 @@ app.use('/positions', positionRoutes);
 app.use('/votes', voteRoutes);
 app.use('/master', masterRoutes);
 
-app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
+app.get('/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
 
 // Local dev: listen normally
 // Vercel: export the app as a serverless function
