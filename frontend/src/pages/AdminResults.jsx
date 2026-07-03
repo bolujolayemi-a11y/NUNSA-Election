@@ -50,12 +50,14 @@ export default function AdminResults() {
           const leader = pos.candidates[0];
 
           return (
-            <div key={pos.position_id} className="card" style={{ marginBottom: 20, overflow: 'hidden' }}>
+            <div key={pos.position_id} className="card card-results" style={{ marginBottom: 20, overflow: 'hidden' }}>
               {/* Header */}
-              <div style={{ padding: '14px 20px', background: 'var(--green-dark)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: '1.05rem', color: 'white' }}>{pos.position}</h2>
-                <span style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.65)' }}>{total} total vote{total !== 1 ? 's' : ''}</span>
-              </div>
+              <div style={{ padding: '14px 20px', background: 'var(--green-dark)', display: 'flex', 
+              flexWrap: 'wrap', // Added flex-wrap
+              justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+              <h2 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: '1.05rem', color: 'white' }}>{pos.position}</h2>
+              <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)' }}>{total} votes</span>
+            </div>
 
               {/* Candidates */}
               <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -81,7 +83,11 @@ export default function AdminResults() {
                   return (
                     <div key={c.candidate_id} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                       {/* Photo */}
-                      <div style={{ width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', background: 'var(--gray-100)', flexShrink: 0, border: isLeader ? '2.5px solid var(--gold)' : '2px solid var(--gray-200)' }}>
+                      <div className="candidate-avatar" style={{ 
+                        width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', 
+                        background: 'var(--gray-100)', flexShrink: 0, 
+                        border: isLeader ? '2.5px solid var(--gold)' : '2px solid var(--gray-200)' 
+                      }}>
                         {c.photo_url
                           ? <img src={c.photo_url} alt={c.candidate} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>👤</div>}

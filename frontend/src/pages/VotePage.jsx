@@ -60,7 +60,7 @@ function CandidateCard({ candidate, selected, onSelect }) {
           cursor: 'pointer', transition: 'all 0.15s',
         }}
       >
-        {selected ? '✓ Selected' : 'Select'}
+        {selected ? '✓ Selected' : 'Vote'}
       </button>
     </div>
   );

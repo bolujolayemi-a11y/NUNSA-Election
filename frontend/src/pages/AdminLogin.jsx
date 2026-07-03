@@ -31,23 +31,22 @@ export default function AdminLogin() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#1a1f2e' }}>
-      <div style={{ padding: '20px 32px' }}>
+      <div style={{ padding: '20px' }}>
         <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.2rem', color: 'white' }}>
           <span style={{ color: '#c9962a' }}>NUNSA</span>UNIMED
         </span>
       </div>
 
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
         <div style={{ width: '100%', maxWidth: 380 }}>
-          <div style={{ textAlign: 'center', marginBottom: 28 }}>
-            <div style={{ fontSize: '2.5rem', marginBottom: 10 }}>🔐</div>
-            <h1 style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.6rem', color: 'white', marginBottom: 4 }}>
-              Admin Panel
-            </h1>
+          {/* Header */}
+          <div style={{ textAlign: 'center', marginBottom: 24 }}>
+            <div style={{ fontSize: '2rem', marginBottom: 8 }}>🔐</div>
+            <h1 style={{ color: 'white', marginBottom: 4 }}>Admin Panel</h1>
             <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>Authorized personnel only</p>
           </div>
 
-          <div className="card" style={{ padding: '28px 24px' }}>
+          <div className="card" style={{ padding: '24px' }}>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div className="form-group">
                 <label>Username</label>
@@ -56,50 +55,37 @@ export default function AdminLogin() {
                   value={form.username}
                   onChange={(e) => setForm({ ...form, username: e.target.value })}
                   placeholder="admin"
-                  autoFocus
+                  style={{ fontSize: '16px', padding: '14px' }}
                 />
               </div>
               <div className="form-group">
                 <label>Password</label>
-
-                <div style={{ position: 'relative' }}>
+                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={form.password}
                     onChange={(e) => setForm({ ...form, password: e.target.value })}
                     placeholder="••••••••"
-                    style={{ paddingRight: '45px' }}
+                    style={{ padding: '14px 45px 14px 14px', fontSize: '16px' }}
                   />
-
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     style={{
-                      position: 'absolute',
-                      right: '12px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      fontSize: '1rem',
-                      color: '#666'
+                      position: 'absolute', right: '12px', background: 'none', border: 'none',
+                      display: 'flex', alignItems: 'center', padding: '8px'
                     }}
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {showPassword ? <EyeOff size={18} color="#9ca3af" /> : <Eye size={18} color="#9ca3af" />}
                   </button>
                 </div>
               </div>
-              {error && <div className="error-msg">{error}</div>}
-              <button className="btn-primary" type="submit" disabled={loading} style={{ padding: 13 }}>
+              {error && <div className="error-msg" style={{ fontSize: '0.85rem' }}>{error}</div>}
+              <button className="btn-primary" type="submit" disabled={loading} style={{ padding: '14px', fontSize: '1rem' }}>
                 {loading ? 'Signing in...' : 'Sign In →'}
               </button>
             </form>
           </div>
-
-          <p style={{ textAlign: 'center', marginTop: 16, color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem' }}>
-            <a href="/login" style={{ color: 'rgba(255,255,255,0.4)', textDecoration: 'none' }}>← Back to voter login</a>
-          </p>
         </div>
       </div>
     </div>

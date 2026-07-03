@@ -305,7 +305,7 @@ export default function AdminPanel() {
         </div>
         {msg.text && <div className={msg.type === 'error' ? 'error-msg' : 'success-msg'} style={{ marginBottom: 16 }}>{msg.text}</div>}
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: 10, marginBottom: 24, flexWrap: 'wrap' }}>
+          <div className="tab-container" style={{ display: 'flex', gap: 10, marginBottom: 24, flexWrap: 'wrap' }}>
           <button style={tabStyle('positions')} onClick={() => setTab('positions')}>📋 Positions & Candidates</button>
           <button style={tabStyle('voters')} onClick={() => setTab('voters')}>👥 Voters ({voters.length})</button>
         </div>
@@ -417,17 +417,18 @@ export default function AdminPanel() {
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
 
                 <thead>
-
                   <tr style={{ borderBottom: '2px solid var(--gray-200)', background: 'var(--gray-100)' }}>
-
                     {['Matric Number', 'Name', 'Level', 'Status', 'Actions'].map(h => (
-
-                      <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: '0.82rem', fontWeight: 600, color: 'var(--gray-600)', fontFamily: 'Syne', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
-
+                      <th 
+                        key={h} 
+                        // If the header is 'Level', apply the hide-on-mini class
+                        className={h === 'Level' ? 'hide-on-mini' : ''}
+                        style={{ padding: '12px 16px', textAlign: 'left', fontSize: '0.82rem', fontWeight: 600, color: 'var(--gray-600)', fontFamily: 'Syne', textTransform: 'uppercase', letterSpacing: '0.5px' }}
+                      >
+                        {h}
+                      </th>
                     ))}
-
                   </tr>
-
                 </thead>
 
                 <tbody>
@@ -436,11 +437,12 @@ export default function AdminPanel() {
                     <tr key={v.id} style={{ borderBottom: '1px solid var(--gray-100)', background: i % 2 === 0 ? 'white' : 'var(--off-white)' }}>
                       <td style={{ padding: '11px 16px', fontFamily: 'monospace', fontSize: '0.88rem', color: 'var(--green-dark)', fontWeight: 600 }}>{v.matric_number}</td>
                       <td style={{ padding: '11px 16px', fontSize: '0.9rem' }}>{v.name}</td>
-                      <td style={{ padding: '11px 16px', fontSize: '0.85rem', color: 'var(--gray-600)' }}>{v.level || '—'}</td>
+                      
+                      {/* ADD THE CLASS HERE */}
+                      <td className="hide-on-mini" style={{ padding: '11px 16px', fontSize: '0.85rem', color: 'var(--gray-600)' }}>{v.level || '—'}</td>
+                      
                       <td style={{ padding: '11px 16px' }}>
-                        {v.has_voted
-                          ? <span className="badge-voted">✓ Voted</span>
-                          : <span style={{ color: 'var(--gray-400)', fontSize: '0.82rem' }}>Pending</span>}
+                        {v.has_voted ? <span className="badge-voted">✓ Voted</span> : <span style={{ color: 'var(--gray-400)', fontSize: '0.82rem' }}>Pending</span>}
                       </td>
                       <td style={{ padding: '11px 16px' }}>
                         <div style={{ display: 'flex', gap: 6 }}>

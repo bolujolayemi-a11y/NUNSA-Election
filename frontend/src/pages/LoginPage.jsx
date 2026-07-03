@@ -63,22 +63,22 @@ export default function LoginPage() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg, #134d2a 0%, #1a6b3a 60%, #2d8a52 100%)' }}>
-      <div style={{ padding: '20px 32px' }}>
+      <div style={{ padding: '20px' }}>
         <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.3rem', color: 'white' }}>
           <span style={{ color: '#c9962a' }}>NUNSA</span>UNIMED
         </span>
       </div>
 
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
         <div style={{ width: '100%', maxWidth: 420 }}>
-          <div style={{ textAlign: 'center', marginBottom: 28 }}>
-            <div style={{ width: 72, height: 72, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontSize: '2rem', backdropFilter: 'blur(8px)' }}>🗳️</div>
-            <h1 style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.8rem', color: 'white', marginBottom: 6 }}>NUNSA ONDO UNIMED Chapter Elections</h1>
-            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.95rem' }}>Enter your matric number to access the ballot</p>
+          <div style={{ textAlign: 'center', marginBottom: 24 }}>
+            <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontSize: '1.8rem', backdropFilter: 'blur(8px)' }}>🗳️</div>
+            <h1 style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.6rem', color: 'white', marginBottom: 6 }}>NUNSA UNIMED Chapter ONDO Elections</h1>
+            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem', padding: '0 20px' }}>Enter your matric number to access the ballot</p>
           </div>
 
-          <div className="card" style={{ padding: '32px 28px' }}>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+          <div className="card" style={{ padding: '24px' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div className="form-group">
                 <label htmlFor="matric">Matric Number</label>
                 <IMaskInput
@@ -88,13 +88,13 @@ export default function LoginPage() {
                   onAccept={(value) => setMatric(value.toUpperCase())}
                   placeholder="NUS/21/0321"
                   autoComplete="off"
-                  style={{ width: '100%', fontSize: '1rem', padding: '13px 16px', letterSpacing: '0.5px' }}
+                  style={{ width: '100%', fontSize: '16px', padding: '14px 16px', letterSpacing: '0.5px' }}
                 />
               </div>
 
               {error && <div className="error-msg" style={{ fontSize: '0.85rem', lineHeight: 1.4 }}>{error}</div>}
 
-              <button className="btn-primary" type="submit" disabled={loading} style={{ padding: '13px', fontSize: '1rem', marginTop: 4 }}>
+              <button className="btn-primary" type="submit" disabled={loading} style={{ width: '100%', padding: '14px', fontSize: '1rem', marginTop: 4 }}>
                 {loading ? 'Verifying...' : 'Access Ballot →'}
               </button>
             </form>
