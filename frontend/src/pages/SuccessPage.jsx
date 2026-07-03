@@ -1,3 +1,8 @@
+ import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import useAuthStore from '../store/authStore';
+import Navbar from '../components/Navbar'; 
+
 export default function SuccessPage() {
   const { voter, logoutVoter } = useAuthStore();
   const navigate = useNavigate();

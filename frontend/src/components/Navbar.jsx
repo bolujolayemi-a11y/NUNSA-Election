@@ -1,3 +1,7 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import useAuthStore from '../store/authStore';
+
 export default function Navbar({ links = [] }) {
   const { voter, admin, master, logoutVoter, logoutAdmin, logoutMaster } = useAuthStore();
   const currentUser = voter || admin || master;
