@@ -26,12 +26,6 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
 
-    const { data } = await api.get(`/auth/voters/verify/${matric}`);
-    if (!data.verified) {
-      setError('You have not been verified yet. Please contact the electoral committee.');
-      return;
-    }
-
     if (!matric.trim()) {
       setError('Please enter your matric number');
       return;
@@ -40,22 +34,33 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const { data } = await api.post('/auth/voter/login', {
+      // 1. Check accreditation using the correct endpoint and encoded URL
+      const encodedMatric = encodeURIComponent(matric);
+      const { data } = await api.get(`/auth/voter/lookup?matric=${encodedMatric}`);
+      
+      if (!data.verified) {
+        setError('You have not been verified yet. Please contact the electoral committee.');
+        setLoading(false);
+        return;
+      }
+
+      // 2. Proceed to login
+      const loginResponse = await api.post('/auth/voter/login', {
         matric_number: matric.toUpperCase().trim(),
       });
 
-      loginVoter(data.token, {
-        ...data.voter,
+      loginVoter(loginResponse.data.token, {
+        ...loginResponse.data.voter,
         role: 'voter',
       });
 
-      data.voter.has_voted ? navigate('/success') : navigate('/vote');
+      loginResponse.data.voter.has_voted ? navigate('/success') : navigate('/vote');
+      
     } catch (err) {
       if (err.response?.data?.site_disabled) {
         setSiteEnabled(false);
-      } else if (err.response?.status === 403) {
-        // Specific instruction for unregistered matric numbers
-        setError('Matric number not found. Kindly contact the electoral committee for assistance.');
+      } else if (err.response?.status === 403 || err.response?.status === 404) {
+        setError('Matric number not found or not accredited. Kindly contact the electoral committee.');
       } else {
         setError(err.response?.data?.error || 'Login failed. Please try again.');
       }

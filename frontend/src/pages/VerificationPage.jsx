@@ -1,39 +1,44 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Add this
 import { IMaskInput } from 'react-imask';
 import api from '../api/client';
 
 export default function VerificationPage() {
   const [matric, setMatric] = useState('');
-  const [voter, setVoter] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // Add this
 
   const searchVoter = async () => {
     setLoading(true);
     setError('');
     try {
-      const { data } = await api.get(`/auth/voter/lookup?matric=${matric}`);
-      setVoter(data);
+      const encodedMatric = encodeURIComponent(matric);
+      const { data } = await api.get(`/auth/voter/lookup?matric=${encodedMatric}`);
+      
+      // Navigate to a new route, passing the voter data via state
+      navigate('/accredit-details', { state: { voter: data, matric } });
     } catch (e) {
       setError('Voter not found in database.');
-      setVoter(null);
     } finally {
       setLoading(false);
     }
   };
-
-  const markVerified = async () => {
+    const markVerified = async () => {
     setLoading(true);
     try {
-      await api.patch(`/auth/voter/verify/${matric}`);
-      alert('Voter accredited successfully!');
-      setVoter({ ...voter, verified: true });
+        // Encode the matric so the slashes don't break the URL
+        const encodedMatric = encodeURIComponent(matric);
+        await api.patch(`/auth/voter/verify/${encodedMatric}`);
+        
+        alert('Voter accredited successfully!');
+        setVoter({ ...voter, verified: true });
     } catch (e) {
-      alert('Failed to verify.');
+        alert('Failed to verify. Please try again.');
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+    };
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg, #134d2a 0%, #1a6b3a 60%, #2d8a52 100%)' }}>

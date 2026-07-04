@@ -65,7 +65,8 @@ router.get('/voter/lookup', async (req, res) => {
 
 // 3. Mark Voter Verified (Accreditation Action)
 router.patch('/voter/verify/:matric', async (req, res) => {
-  const { matric } = req.params;
+  const matric = decodeURIComponent(req.params.matric);
+  
   try {
     const result = await pool.query(
       'UPDATE voters SET verified = true WHERE UPPER(matric_number) = $1 RETURNING *',

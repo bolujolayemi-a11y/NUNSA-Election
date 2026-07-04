@@ -13,6 +13,7 @@ import AdminResults from './pages/AdminResults';
 import MasterLogin from './pages/MasterLogin';
 import MasterDashboard from './pages/MasterDashboard';
 import VerificationPage from './pages/VerificationPage';
+import AccreditDetails from './pages/AccreditDetails';
 
 function ProtectedVoter({ children }) {
   const { voterToken } = useAuthStore();
@@ -105,6 +106,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <VerificationPage />
     </ProtectedAdmin>
   } 
+/>
+<Route
+  path="/accredit-details"
+  element={
+    <ProtectedAdmin>
+      <AccreditDetails />
+    </ProtectedAdmin>
+  }
 />
 <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
