@@ -46,7 +46,7 @@ export default function AdminResults() {
         )}
 
         {results.map(pos => {
-          const total = pos.candidates.reduce((s, c) => s + c.votes, 0);
+          const totalBallots = pos.candidates.reduce((s, c) => s + c.votes, 0) + pos.no_votes;
           const leader = pos.candidates[0];
 
           return (
@@ -56,7 +56,7 @@ export default function AdminResults() {
               flexWrap: 'wrap', // Added flex-wrap
               justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
               <h2 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: '1.05rem', color: 'white' }}>{pos.position}</h2>
-              <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)' }}>{total} votes</span>
+              <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)' }}>{totalBallots} votes</span>
             </div>
 
               {/* Candidates */}
@@ -64,20 +64,24 @@ export default function AdminResults() {
                 {pos.candidates.length === 0 && <p style={{ color: 'var(--gray-400)', fontSize: '0.88rem' }}>No candidates.</p>}
                 {pos.no_votes > 0 && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                    <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#fef2f2', border: '2px solid #fecaca', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', flexShrink: 0 }}>👎</div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-                        <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--red)' }}>NO votes</span>
-                        <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--red)' }}>{pos.no_votes}</span>
-                      </div>
-                      <div style={{ height: 10, background: 'var(--gray-100)', borderRadius: 999, overflow: 'hidden' }}>
-                        <div style={{ height: '100%', width: `${total > 0 ? Math.round((pos.no_votes / (total + pos.no_votes)) * 100) : 0}%`, background: '#dc2626', borderRadius: 999 }} />
+                  <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#fef2f2', border: '2px solid #fecaca', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', flexShrink: 0 }}>👎</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+                      <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--red)' }}>NO votes</span>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--red)' }}>{pos.no_votes}</span>
+                    </div>
+                    <div style={{ height: 10, background: 'var(--gray-100)', borderRadius: 999, overflow: 'hidden' }}>
+                      <div style={{ 
+                        height: '100%', 
+                        // Use totalBallots here
+                        width: `${totalBallots > 0 ? Math.round((pos.no_votes / totalBallots) * 100) : 0}%`, 
+                        background: '#dc2626', borderRadius: 999 }} />
                       </div>
                     </div>
                   </div>
                 )}
                 {pos.candidates.map((c, idx) => {
-                  const pct = total > 0 ? Math.round((c.votes / total) * 100) : 0;
+                  const pct = totalBallots > 0 ? Math.round((c.votes / totalBallots) * 100) : 0;
                   const isLeader = idx === 0 && c.votes > 0;
 
                   return (
@@ -101,13 +105,13 @@ export default function AdminResults() {
                             {c.candidate}
                           </span>
                           <span style={{ fontSize: '0.85rem', fontWeight: 700, color: isLeader ? 'var(--green)' : 'var(--gray-600)' }}>
-                            {c.votes} vote{c.votes !== 1 ? 's' : ''} ({pct}%)
+                            {c.votes} votes ({pct}%)
                           </span>
                         </div>
                         <div style={{ height: 10, background: 'var(--gray-100)', borderRadius: 999, overflow: 'hidden' }}>
                           <div style={{
                             height: '100%',
-                            width: `${pct}%`,
+                            width: `${pct}%`, // pct now correctly uses totalBallots
                             background: isLeader ? 'var(--green)' : 'var(--gray-400)',
                             borderRadius: 999,
                             transition: 'width 0.5s ease',
