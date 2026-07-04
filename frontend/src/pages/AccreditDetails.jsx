@@ -34,8 +34,8 @@ export default function AccreditDetails() {
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #134d2a 0%, #1a6b3a 60%, #2d8a52 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="card" style={{ padding: '24px', maxWidth: '400px', width: '90%' }}>
         <h1 style={{ fontFamily: 'Syne', fontSize: '1.5rem', marginBottom: 20 }}>Confirm Accreditation</h1>
-        <p><strong>Matric:</strong> {matric}</p>
-        <p><strong>Name:</strong> {voter.name}</p>
+        <p><strong>Matric Number:</strong> {matric}</p>
+        <p><strong>Full Name:</strong> {voter.name}</p>
         <p><strong>Level:</strong> {voter.level}</p>
         
         <button 

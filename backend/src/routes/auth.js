@@ -79,6 +79,25 @@ router.patch('/voter/verify/:matric', async (req, res) => {
   }
 });
 
+// Add this to routes/auth.js
+router.patch('/voters/:id/toggle-verify', async (req, res) => {
+  const { id } = req.params;
+  const { verified } = req.body; // Incoming boolean
+
+  try {
+    const result = await pool.query(
+      'UPDATE voters SET verified = $1 WHERE id = $2 RETURNING *',
+      [verified, id]
+    );
+    
+    if (result.rowCount === 0) return res.status(404).json({ error: 'Voter not found' });
+    
+    res.json({ message: 'Status updated successfully', voter: result.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
 
 // Admin login
 router.post('/admin/login', async (req, res) => {

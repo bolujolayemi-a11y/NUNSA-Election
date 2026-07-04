@@ -37,7 +37,7 @@ export default function VerificationPage() {
         <div style={{ width: '100%', maxWidth: 420 }}>
           <div style={{ textAlign: 'center', marginBottom: 24 }}>
             <h1 style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.6rem', color: 'white', marginBottom: 6 }}>Accreditation Desk</h1>
-            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem' }}>Verify voter identity before login</p>
+            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem' }}>Verify voter identity</p>
           </div>
 
           <div className="card" style={{ padding: '24px' }}>

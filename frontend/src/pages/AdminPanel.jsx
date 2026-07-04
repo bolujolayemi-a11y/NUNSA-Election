@@ -267,6 +267,17 @@ export default function AdminPanel() {
     );
   };
 
+  const toggleVerification = async (id, currentStatus) => {
+    try {
+      // We send the OPPOSITE of the current status
+      await api.patch(`/auth/voters/${id}/toggle-verify`, { verified: !currentStatus });
+      flash('success', 'Verification status updated');
+      loadData();
+    } catch (e) { 
+      flash('error', 'Failed to update verification'); 
+    }
+  };
+
   const deleteVoter = async (id) => {
     if (!window.confirm('Remove this voter?')) return;
     try { await api.delete(`/votes/voters/${id}`); flash('success', 'Voter removed'); loadData(); }
@@ -418,39 +429,40 @@ export default function AdminPanel() {
 
                 <thead>
                   <tr style={{ borderBottom: '2px solid var(--gray-200)', background: 'var(--gray-100)' }}>
-                    {['Matric Number', 'Name', 'Level', 'Status', 'Actions'].map(h => (
-                      <th 
-                        key={h} 
-                        // If the header is 'Level', apply the hide-on-mini class
-                        className={h === 'Level' ? 'hide-on-mini' : ''}
-                        style={{ padding: '12px 16px', textAlign: 'left', fontSize: '0.82rem', fontWeight: 600, color: 'var(--gray-600)', fontFamily: 'Syne', textTransform: 'uppercase', letterSpacing: '0.5px' }}
-                      >
+                    {['Matric Number', 'Name', 'Status', 'Verified', 'Actions'].map(h => (
+                      <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: '0.82rem', fontWeight: 600, color: 'var(--gray-600)', fontFamily: 'Syne', textTransform: 'uppercase' }}>
                         {h}
                       </th>
                     ))}
                   </tr>
                 </thead>
 
-                <tbody>
-
+               <tbody>
                   {voters.map((v, i) => (
-                    <tr key={v.id} style={{ borderBottom: '1px solid var(--gray-100)', background: i % 2 === 0 ? 'white' : 'var(--off-white)' }}>
-                      <td style={{ padding: '11px 16px', fontFamily: 'monospace', fontSize: '0.88rem', color: 'var(--green-dark)', fontWeight: 600 }}>{v.matric_number}</td>
-                      <td style={{ padding: '11px 16px', fontSize: '0.9rem' }}>{v.name}</td>
-                      
-                      {/* ADD THE CLASS HERE */}
-                      <td className="hide-on-mini" style={{ padding: '11px 16px', fontSize: '0.85rem', color: 'var(--gray-600)' }}>{v.level || '—'}</td>
-                      
+                    <tr key={v.id} style={{ borderBottom: '1px solid var(--gray-100)' }}>
+                      <td style={{ padding: '11px 16px', fontFamily: 'monospace' }}>{v.matric_number}</td>
+                      <td style={{ padding: '11px 16px' }}>{v.name}</td>
                       <td style={{ padding: '11px 16px' }}>
-                        {v.has_voted ? <span className="badge-voted">✓ Voted</span> : <span style={{ color: 'var(--gray-400)', fontSize: '0.82rem' }}>Pending</span>}
+                        {v.has_voted ? <span className="badge-voted">✓ Voted</span> : <span style={{ color: 'var(--gray-400)' }}>Pending</span>}
+                      </td>
+                      {/* Verification Status and Toggle */}
+                      <td style={{ padding: '11px 16px' }}>
+                        <button 
+                          onClick={() => toggleVerification(v.id, v.verified)}
+                          style={{ 
+                            fontSize: '0.75rem', 
+                            padding: '4px 8px', 
+                            background: v.verified ? 'var(--green)' : 'var(--gray-200)',
+                            color: v.verified ? 'white' : 'var(--gray-600)',
+                            border: 'none',
+                            borderRadius: '4px'
+                          }}
+                        >
+                          {v.verified ? '✓ Verified' : 'Unverified'}
+                        </button>
                       </td>
                       <td style={{ padding: '11px 16px' }}>
-                        <div style={{ display: 'flex', gap: 6 }}>
-                          {v.has_voted && (
-                            <button className="btn-ghost" style={{ fontSize: '0.75rem', padding: '5px 10px', color: 'var(--gold)' }} onClick={() => resetVote(v.id)}>Reset</button>
-                          )}
-                          <button className="btn-danger" style={{ fontSize: '0.75rem', padding: '5px 10px' }} onClick={() => deleteVoter(v.id)}>Remove</button>
-                        </div>
+                        <button className="btn-danger" onClick={() => deleteVoter(v.id)}>Remove</button>
                       </td>
                     </tr>
                   ))}
