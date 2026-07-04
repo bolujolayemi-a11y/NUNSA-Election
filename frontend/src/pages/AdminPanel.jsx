@@ -445,24 +445,45 @@ export default function AdminPanel() {
                       <td style={{ padding: '11px 16px' }}>
                         {v.has_voted ? <span className="badge-voted">✓ Voted</span> : <span style={{ color: 'var(--gray-400)' }}>Pending</span>}
                       </td>
-                      {/* Verification Status and Toggle */}
+                      
+                      {/* 1. Verified Status Column (Added the Toggle Button) */}
                       <td style={{ padding: '11px 16px' }}>
                         <button 
                           onClick={() => toggleVerification(v.id, v.verified)}
                           style={{ 
                             fontSize: '0.75rem', 
-                            padding: '4px 8px', 
+                            padding: '5px 10px', 
                             background: v.verified ? 'var(--green)' : 'var(--gray-200)',
                             color: v.verified ? 'white' : 'var(--gray-600)',
                             border: 'none',
-                            borderRadius: '4px'
+                            borderRadius: '4px',
+                            cursor: 'pointer'
                           }}
                         >
                           {v.verified ? '✓ Verified' : 'Unverified'}
                         </button>
                       </td>
+
+                      {/* 2. Actions Column (Restored Reset + Remove) */}
                       <td style={{ padding: '11px 16px' }}>
-                        <button className="btn-danger" onClick={() => deleteVoter(v.id)}>Remove</button>
+                        <div style={{ display: 'flex', gap: 6 }}>
+                          {v.has_voted && (
+                            <button 
+                              className="btn-ghost" 
+                              style={{ fontSize: '0.75rem', padding: '5px 10px', color: 'var(--gold)' }} 
+                              onClick={() => resetVote(v.id)}
+                            >
+                              Reset
+                            </button>
+                          )}
+                          <button 
+                            className="btn-danger" 
+                            style={{ fontSize: '0.75rem', padding: '5px 10px' }} 
+                            onClick={() => deleteVoter(v.id)}
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
