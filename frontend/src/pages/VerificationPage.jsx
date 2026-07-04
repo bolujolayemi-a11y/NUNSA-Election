@@ -1,13 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Add this
-import { IMaskInput } from 'react-imask';
-import api from '../api/client';
-
 export default function VerificationPage() {
   const [matric, setMatric] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Add this
+  const navigate = useNavigate();
 
   const searchVoter = async () => {
     setLoading(true);
@@ -16,7 +11,7 @@ export default function VerificationPage() {
       const encodedMatric = encodeURIComponent(matric);
       const { data } = await api.get(`/auth/voter/lookup?matric=${encodedMatric}`);
       
-      // Navigate to a new route, passing the voter data via state
+      // Navigate to confirm page with data
       navigate('/accredit-details', { state: { voter: data, matric } });
     } catch (e) {
       setError('Voter not found in database.');
@@ -24,25 +19,9 @@ export default function VerificationPage() {
       setLoading(false);
     }
   };
-    const markVerified = async () => {
-    setLoading(true);
-    try {
-        // Encode the matric so the slashes don't break the URL
-        const encodedMatric = encodeURIComponent(matric);
-        await api.patch(`/auth/voter/verify/${encodedMatric}`);
-        
-        alert('Voter accredited successfully!');
-        setVoter({ ...voter, verified: true });
-    } catch (e) {
-        alert('Failed to verify. Please try again.');
-    } finally {
-        setLoading(false);
-    }
-    };
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg, #134d2a 0%, #1a6b3a 60%, #2d8a52 100%)' }}>
-      {/* Header matching Login Page */}
       <div style={{ padding: '20px' }}>
         <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.3rem', color: 'white' }}>
           <span style={{ color: '#c9962a' }}>NUNSA</span>UNIMED
@@ -74,23 +53,7 @@ export default function VerificationPage() {
                 {loading ? 'Searching...' : 'Search Voter'}
               </button>
             </div>
-
             {error && <p style={{ color: 'red', marginTop: 16, fontSize: '0.9rem' }}>{error}</p>}
-
-            {voter && (
-              <div style={{ marginTop: 24, padding: '16px', background: '#f9f9f9', borderRadius: '8px' }}>
-                <p style={{ margin: '0 0 8px 0' }}><strong>Name:</strong> {voter.name}</p>
-                <p style={{ margin: '0 0 16px 0' }}><strong>Level:</strong> {voter.level}</p>
-                <button 
-                  className="btn-primary" 
-                  onClick={markVerified} 
-                  disabled={voter.verified || loading}
-                  style={{ width: '100%', background: voter.verified ? '#666' : 'var(--green)' }}
-                >
-                  {voter.verified ? '✓ Already Verified' : 'Verify Voter'}
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>
