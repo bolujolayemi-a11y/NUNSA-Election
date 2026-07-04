@@ -12,6 +12,7 @@ import AdminPanel from './pages/AdminPanel';
 import AdminResults from './pages/AdminResults';
 import MasterLogin from './pages/MasterLogin';
 import MasterDashboard from './pages/MasterDashboard';
+import VerificationPage from './pages/VerificationPage';
 
 function ProtectedVoter({ children }) {
   const { voterToken } = useAuthStore();
@@ -97,6 +98,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </ProtectedMaster>
   } 
   />
+<Route 
+  path="/verification" 
+  element={
+    <ProtectedAdmin>
+      <VerificationPage />
+    </ProtectedAdmin>
+  } 
+/>
 <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   </BrowserRouter>

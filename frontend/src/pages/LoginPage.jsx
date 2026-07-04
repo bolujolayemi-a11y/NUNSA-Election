@@ -26,6 +26,12 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
 
+    const { data } = await api.get(`/auth/voters/verify/${matric}`);
+    if (!data.verified) {
+      setError('You have not been verified yet. Please contact the electoral committee.');
+      return;
+    }
+
     if (!matric.trim()) {
       setError('Please enter your matric number');
       return;

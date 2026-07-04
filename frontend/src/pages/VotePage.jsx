@@ -99,7 +99,7 @@ function YesNoCard({ candidate, value, onChange }) {
             boxShadow: value === 'yes' ? '0 0 0 3px rgba(26,107,58,0.15)' : 'none',
           }}
         >
-          👍 YES
+          YES
         </button>
         <button
           onClick={() => onChange('no')}
@@ -113,7 +113,7 @@ function YesNoCard({ candidate, value, onChange }) {
             boxShadow: value === 'no' ? '0 0 0 3px rgba(220,38,38,0.15)' : 'none',
           }}
         >
-          👎 NO
+          NO
         </button>
       </div>
     </div>
