@@ -1,3 +1,8 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { IMaskInput } from 'react-imask';
+import api from '../api/client'; 
+
 export default function VerificationPage() {
   const [matric, setMatric] = useState('');
   const [loading, setLoading] = useState(false);
