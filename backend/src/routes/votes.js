@@ -128,7 +128,7 @@ router.get('/results', verifyAdmin, async (req, res) => {
 router.get('/voters', verifyAdmin, async (req, res) => {
   try {
     const { rows } = await pool.query(
-      'SELECT id, matric_number, name, level, has_voted, created_at FROM voters ORDER BY matric_number'
+      'SELECT id, matric_number, name, level, has_voted, verified, created_at FROM voters ORDER BY matric_number'
     );
     res.json(rows);
   } catch (err) {
