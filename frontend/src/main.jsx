@@ -116,7 +116,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </ProtectedAdmin>
   }
 />
-<Route path="/public_results" element={<PublicResults />} />
+<Route path="/public-results" element={<PublicResults />} />
 <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   </BrowserRouter>
