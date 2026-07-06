@@ -70,6 +70,69 @@ router.post('/', verifyVoter, checkSiteEnabled, async (req, res) => {
   }
 });
 
+// PUBLIC: Get results (no auth required)
+router.get('/public-results', async (req, res) => {
+  try {
+    const { rows } = await pool.query(`
+      SELECT
+        p.id AS position_id,
+        p.title AS position,
+        c.id AS candidate_id,
+        c.name AS candidate,
+        c.photo_url,
+        COUNT(v.id)::int AS votes
+      FROM positions p
+      LEFT JOIN candidates c ON c.position_id = p.id
+      LEFT JOIN votes v ON v.candidate_id = c.id
+      GROUP BY p.id, p.title, c.id, c.name, c.photo_url
+      ORDER BY p.display_order, p.id, votes DESC
+    `);
+
+    // Get NO vote counts per position
+    const { rows: noRows } = await pool.query(`
+      SELECT position_id, COUNT(*)::int AS no_votes
+      FROM no_votes
+      GROUP BY position_id
+    `);
+    const noVoteMap = {};
+    for (const r of noRows) noVoteMap[r.position_id] = r.no_votes;
+
+    const grouped = {};
+    for (const row of rows) {
+      if (!grouped[row.position_id]) {
+        grouped[row.position_id] = {
+          position_id: row.position_id,
+          position: row.position,
+          candidates: [],
+          no_votes: noVoteMap[row.position_id] || 0,
+        };
+      }
+      if (row.candidate_id) {
+        grouped[row.position_id].candidates.push({
+          candidate_id: row.candidate_id,
+          candidate: row.candidate,
+          photo_url: row.photo_url,
+          votes: row.votes,
+        });
+      }
+    }
+
+    res.json(Object.values(grouped));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+// PUBLIC: Get voter stats (no auth required)
+router.get('/public-voters', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT verified FROM voters');
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Admin: Get results (includes NO votes for uncontested positions)
 router.get('/results', verifyAdmin, async (req, res) => {
   try {

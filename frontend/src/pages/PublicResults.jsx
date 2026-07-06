@@ -13,13 +13,13 @@ export default function PublicResults() {
   });
 
   useEffect(() => {
-    // Fetch both results and the voter list for live statistics
+    // Call the new public endpoints
     Promise.all([
-      api.get('/votes/results'),
-      api.get('/votes/voters')
+      api.get('/votes/public-results'),
+      api.get('/votes/public-voters')
     ]).then(([resData, voterData]) => {
       setResults(resData.data);
-      setVoters(voterData.data);
+      setVoters(voterData.data); // voterData.data is now just the array of verified statuses
       setLoading(false);
     });
   }, []);
