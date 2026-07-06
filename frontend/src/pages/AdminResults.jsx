@@ -69,7 +69,7 @@ export default function AdminResults() {
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-                        <span style={{ fontWeight: 500, fontSize: '0.9rem', color: '#6b7280' }}>Void / Abstentions</span>
+                        <span style={{ fontWeight: 500, fontSize: '0.9rem', color: '#dc2626' }}>Votes Against</span>
                         <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#6b7280' }}>{pos.no_votes} votes</span>
                       </div>
                       <div style={{ height: 6, background: '#f0f2f5', borderRadius: 999, overflow: 'hidden' }}>
