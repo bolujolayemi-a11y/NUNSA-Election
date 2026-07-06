@@ -8,8 +8,8 @@ export default function PublicResults() {
 
   useEffect(() => {
     Promise.all([
-      publicApi.get('/votes/public-results'),
-      publicApi.get('/votes/public-voters')
+      api.get('/votes/public-results'),
+      api.get('/votes/public-voters')
     ]).then(([res, vRes]) => {
       setResults(res.data);
       setVoters(vRes.data);
