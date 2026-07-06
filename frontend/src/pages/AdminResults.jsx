@@ -63,19 +63,20 @@ export default function AdminResults() {
               <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {pos.candidates.length === 0 && <p style={{ color: 'var(--gray-400)', fontSize: '0.88rem' }}>No candidates.</p>}
                 {pos.no_votes > 0 && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#fef2f2', border: '2px solid #fecaca', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', flexShrink: 0 }}>NO</div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-                      <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--red)' }}>NO votes</span>
-                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--red)' }}>{pos.no_votes}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '10px 0', borderTop: '1px solid #f0f0f0' }}>
+                    <div style={{ width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', color: '#6b7280', flexShrink: 0 }}>
+                      -
                     </div>
-                    <div style={{ height: 10, background: 'var(--gray-100)', borderRadius: 999, overflow: 'hidden' }}>
-                      <div style={{ 
-                        height: '100%', 
-                        // Use totalBallots here
-                        width: `${totalBallots > 0 ? Math.round((pos.no_votes / totalBallots) * 100) : 0}%`, 
-                        background: '#dc2626', borderRadius: 999 }} />
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+                        <span style={{ fontWeight: 500, fontSize: '0.9rem', color: '#6b7280' }}>Void / Abstentions</span>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#6b7280' }}>{pos.no_votes} votes</span>
+                      </div>
+                      <div style={{ height: 6, background: '#f0f2f5', borderRadius: 999, overflow: 'hidden' }}>
+                        <div style={{ 
+                          height: '100%', 
+                          width: `${totalBallots > 0 ? Math.round((pos.no_votes / totalBallots) * 100) : 0}%`, 
+                          background: '#d1d5db', borderRadius: 999 }} />
                       </div>
                     </div>
                   </div>

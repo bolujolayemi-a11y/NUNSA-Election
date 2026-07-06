@@ -26,7 +26,7 @@ export default function PublicResults() {
     // 'width: 100%' and 'max-width' ensure it fills PC screens while remaining readable
     <div style={{ width: '100%', maxWidth: '1000px', margin: '0 auto', padding: '40px 20px', fontFamily: "'DM Sans', sans-serif" }}>
       <header style={{ textAlign: 'center', marginBottom: 40 }}>
-        <h1 style={{ fontFamily: "'Syne', sans-serif", color: '#1a6b3a' }}>NUNSA UNIMED Chapter Election Results</h1>
+        <h1 style={{ fontFamily: "'Syne', sans-serif", color: '#1a6b3a' }}>Nigerian Universities Nursing Students' Association (UNIMED Chapter) Election Results</h1>
         <p>Published: {new Date().toLocaleString()}</p>
       </header>
 
@@ -57,7 +57,13 @@ export default function PublicResults() {
             );
           })}
         </div>
-      ))}
+        ))}
+        <footer style={{ marginTop: 60, paddingTop: 20, borderTop: '1px solid #ccc', fontSize: '0.8rem', color: '#555' }}>
+        <p>These results are official and final. For inquiries, contact the electoral commission.</p>
+        <p>University of Medical Sciences Student Union Elections 2026</p>
+        <p>bolujolayemi@gmail.com | +234 906 623 7453</p>
+        <p>© 2026 Nigerian Universities Nursing Students' Association (UNIMED Chapter). All rights reserved.</p>
+        </footer> 
     </div>
   );
 }
