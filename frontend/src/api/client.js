@@ -13,6 +13,12 @@ api.interceptors.request.use((config) => {
   const url = config.url || '';
   const method = (config.method || 'get').toLowerCase();
 
+  // 1. ADD THIS: Explicitly skip authentication for your new public endpoints
+  if (url.includes('/votes/public-results') || url.includes('/votes/public-voters')) {
+    return config;
+  }
+
+  // 2. Existing logic for other routes
   if (url.startsWith('/master')) {
     token = localStorage.getItem('master_token');
     tokenType = 'master';
