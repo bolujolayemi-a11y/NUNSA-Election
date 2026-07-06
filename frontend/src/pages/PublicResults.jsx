@@ -7,6 +7,7 @@ export default function PublicResults() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // These now bypass the redirect logic thanks to the interceptor update
     Promise.all([
       api.get('/votes/public-results'),
       api.get('/votes/public-voters')
@@ -17,42 +18,46 @@ export default function PublicResults() {
     });
   }, []);
 
-  if (loading) return <div style={{ padding: 40, textAlign: 'center' }}>Loading...</div>;
+  if (loading) return <div style={{ padding: 40, textAlign: 'center' }}>Loading Official Report...</div>;
 
-  // Safe check to get participation count
   const totalParticipation = results.length > 0 ? results[0].total_participation : 0;
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px', fontFamily: 'sans-serif' }}>
+    // 'width: 100%' and 'max-width' ensure it fills PC screens while remaining readable
+    <div style={{ width: '100%', maxWidth: '1000px', margin: '0 auto', padding: '40px 20px', fontFamily: "'DM Sans', sans-serif" }}>
       <header style={{ textAlign: 'center', marginBottom: 40 }}>
-        <h1>Nigerian Universities Nursing Students' Association (UNIMED Chapter) Election</h1>
+        <h1 style={{ fontFamily: "'Syne', sans-serif", color: '#1a6b3a' }}>NUNSA UNIMED Chapter Election Results</h1>
         <p>Published: {new Date().toLocaleString()}</p>
       </header>
 
-      <section style={{ display: 'flex', justifyContent: 'space-around', borderBottom: '2px solid #333', paddingBottom: 20, marginBottom: 40 }}>
+      {/* Stats Section: Uses grid for even spacing on PC */}
+      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', borderBottom: '2px solid #333', paddingBottom: 20, marginBottom: 40 }}>
         <div style={{ textAlign: 'center' }}><h3>{voters.length}</h3><p style={{ fontSize: '0.7rem' }}>TOTAL STUDENTS</p></div>
         <div style={{ textAlign: 'center' }}><h3>{voters.filter(v => v.verified).length}</h3><p style={{ fontSize: '0.7rem' }}>VERIFIED STUDENTS</p></div>
         <div style={{ textAlign: 'center' }}><h3>{totalParticipation}</h3><p style={{ fontSize: '0.7rem' }}>VOTES CAST</p></div>
       </section>
 
+      {/* Results Body: Card-based container layout */}
       {results.map(pos => (
-        <div key={pos.position_id} style={{ marginBottom: 40 }}>
-          <h2 style={{ borderBottom: '1px solid #ccc', marginBottom: '10px' }}>{pos.position}</h2>
-          {pos.candidates.map((c, i) => (
-            <div key={c.candidate_id} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0' }}>
-              <strong>{i === 0 && '👑 '} {c.candidate}</strong>
-              <span>{c.votes} votes ({totalParticipation > 0 ? ((c.votes / totalParticipation) * 100).toFixed(2) : 0}%)</span>
-            </div>
-          ))}
+        <div key={pos.position_id} style={{ marginBottom: 30, background: '#fff', padding: 24, borderRadius: '12px', border: '1px solid #e4e7eb', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+          <h2 style={{ fontFamily: "'Syne', sans-serif", borderBottom: '1px solid #eee', paddingBottom: 10 }}>{pos.position}</h2>
+          {pos.candidates.map((c, i) => {
+            const pct = totalParticipation > 0 ? ((c.votes / totalParticipation) * 100).toFixed(1) : 0;
+            return (
+              <div key={c.candidate_id} style={{ padding: '15px 0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <strong style={{ fontSize: '1rem' }}>{i === 0 && '👑 '} {c.candidate}</strong>
+                  <span style={{ fontWeight: 700 }}>{c.votes} votes ({pct}%)</span>
+                </div>
+                {/* Progress bar for visual fill */}
+                <div style={{ height: '10px', background: '#f0f2f5', borderRadius: '5px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${pct}%`, background: i === 0 ? '#1a6b3a' : '#9ca3af' }} />
+                </div>
+              </div>
+            );
+          })}
         </div>
       ))}
-
-      <footer style={{ marginTop: 60, paddingTop: 20, borderTop: '1px solid #ccc', fontSize: '0.8rem', color: '#555' }}>
-        <p>These results are official and final. For inquiries, contact the electoral commission.</p>
-        <p>University of Medical Sciences Student Union Elections 2026</p>
-        <p>bolujolayemi@gmail.com | +234 906 623 7453</p>
-        <p>© 2026 Nigerian Universities Nursing Students' Association (UNIMED Chapter). All rights reserved.</p>
-      </footer>
     </div>
   );
 }
