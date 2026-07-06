@@ -64,7 +64,7 @@ export default function AdminResults() {
                 {pos.candidates.length === 0 && <p style={{ color: 'var(--gray-400)', fontSize: '0.88rem' }}>No candidates.</p>}
                 {pos.no_votes > 0 && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#fef2f2', border: '2px solid #fecaca', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', flexShrink: 0 }}>👎</div>
+                  <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#fef2f2', border: '2px solid #fecaca', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', flexShrink: 0 }}>NO</div>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
                       <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--red)' }}>NO votes</span>
