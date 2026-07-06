@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { publicApi } from '../api/client';
+import api from '../api/client';
 
 export default function PublicResults() {
   const [results, setResults] = useState([]);
