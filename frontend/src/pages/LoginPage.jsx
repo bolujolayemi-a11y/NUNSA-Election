@@ -85,7 +85,7 @@ export default function LoginPage() {
           <div style={{ textAlign: 'center', marginBottom: 24 }}>
             <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontSize: '1.8rem', backdropFilter: 'blur(8px)' }}>🗳️</div>
             <h1 style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.6rem', color: 'white', marginBottom: 6 }}>NUNSA UNIMED Chapter Election</h1>
-            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem', padding: '0 20px' }}>Enter your matric number to access the ballot</p>
+            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem', padding: '0 20px' }}>Enter your matric number to access the voting portal</p>
           </div>
 
           <div className="card" style={{ padding: '24px' }}>
