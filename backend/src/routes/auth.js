@@ -46,14 +46,14 @@ router.post('/voter/login', checkSiteEnabled, async (req, res) => {
   }
 });
 
-// 2. Voter Lookup (Accreditation Desk - Now Protected)
+// 2. Voter Lookup (Used by Accreditation Desk)
 router.get('/voter/lookup', verifyAdmin, async (req, res) => {
   const matric = (req.query.matric || '').trim().toUpperCase();
   if (!matric) return res.status(400).json({ error: 'Matric number required' });
 
   try {
     const { rows } = await pool.query(
-      'SELECT id, name, level, verified FROM voters WHERE UPPER(matric_number) = $1',
+      'SELECT name, level, verified FROM voters WHERE UPPER(matric_number) = $1',
       [matric]
     );
     if (!rows.length) return res.status(404).json({ error: 'Voter not found' });
@@ -64,22 +64,18 @@ router.get('/voter/lookup', verifyAdmin, async (req, res) => {
   }
 });
 
-// 3. Toggle Voter Verification (Accreditation Action - Now Protected)
-router.patch('/voters/:id/toggle-verify', verifyAdmin, async (req, res) => {
-  const { id } = req.params;
-  const { verified } = req.body; 
-
+// 3. Mark Voter Verified (Accreditation Action)
+router.patch('/voter/verify/:matric', verifyAdmin, async (req, res) => {
+  const matric = decodeURIComponent(req.params.matric);
+  
   try {
     const result = await pool.query(
-      'UPDATE voters SET verified = $1 WHERE id = $2 RETURNING *',
-      [verified, id]
+      'UPDATE voters SET verified = true WHERE UPPER(matric_number) = $1 RETURNING *',
+      [matric.toUpperCase()]
     );
-    
     if (result.rowCount === 0) return res.status(404).json({ error: 'Voter not found' });
-    
-    res.json({ message: 'Status updated successfully', voter: result.rows[0] });
+    res.json({ message: 'Voter accredited successfully' });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: 'Database error' });
   }
 });
