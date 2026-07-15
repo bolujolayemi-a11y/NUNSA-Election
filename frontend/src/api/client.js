@@ -25,7 +25,9 @@ api.interceptors.request.use((config) => {
   } else if (
     url.startsWith('/positions/admin') ||
     url.startsWith('/votes/results') ||
-    url.startsWith('/votes/voters')
+    url.startsWith('/votes/voters') ||
+    url.startsWith('/auth/voter/lookup') || 
+    url.startsWith('/auth/voter/verify')    
   ) {
     token = localStorage.getItem('admin_token');
     tokenType = 'admin';
@@ -48,6 +50,10 @@ api.interceptors.response.use(
   (err) => {
     if (err.response?.status === 401) {
       const tokenType = err.config?.headers?.['X-Token-Type'];
+
+      if (window.location.pathname.startsWith('/verification')) {
+        return Promise.reject(err);
+      }
       switch (tokenType) {
         case 'master':
           localStorage.removeItem('master_token');
