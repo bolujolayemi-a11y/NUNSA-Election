@@ -60,7 +60,7 @@ export default function PublicResults() {
         ))}
         <footer style={{ marginTop: 60, paddingTop: 20, borderTop: '1px solid #ccc', fontSize: '0.8rem', color: '#555' }}>
         <p>These results are official and final. For inquiries, contact the electoral commission.</p>
-        <p>University of Medical Sciences Student Union Elections 2026</p>
+        <p>Nigerian Universities Nursing Students' Association Elections 2026</p>
         <p>bolujolayemi@gmail.com | +234 906 623 7453</p>
         <p>© 2026 Nigerian Universities Nursing Students' Association (UNIMED Chapter). All rights reserved.</p>
         </footer> 
