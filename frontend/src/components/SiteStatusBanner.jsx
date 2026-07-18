@@ -19,7 +19,7 @@ export default function SiteStatusBanner() {
       background: '#fef2f2', borderBottom: '1px solid #fecaca', color: '#991b1b',
       padding: '10px 20px', textAlign: 'center', fontSize: '0.88rem', fontWeight: 500,
     }}>
-      🔴 Voting is currently shut down by the site owner. Voters cannot log in or submit votes until it's re-enabled.
+      🔴 Site is currently inactive.
     </div>
   );
 }
